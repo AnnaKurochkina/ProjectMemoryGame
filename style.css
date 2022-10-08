@@ -16,11 +16,21 @@ body {
 
 .grid-container__memoryGame {
   display: grid;
-  grid-template-columns: repeat(4, 10rem);
-  grid-template-rows: repeat(4, 10rem);
   gap: 1rem;
   text-align: center;
   justify-content: center;
+}
+.grid-container__memoryGame.small {
+  grid-template-columns: repeat(4, 10rem);
+  grid-template-rows: repeat(4, 10rem);
+}
+.grid-container__memoryGame.medium {
+  grid-template-columns: repeat(4, 10rem);
+  grid-template-rows: repeat(5, 10rem);
+}
+.grid-container__memoryGame.large {
+  grid-template-columns: repeat(6, 8rem);
+  grid-template-rows: repeat(6, 8rem);
 }
 
 .flip-card-container {

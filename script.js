@@ -12,6 +12,17 @@ const state = {
 
 const renderGrid = () => {
     const grid = document.querySelector(".grid-container__memoryGame");
+    switch (state.cardImages.length) {
+        case 16:
+            grid.className = "grid-container__memoryGame small";
+            break;
+        case 20:
+            grid.className = "grid-container__memoryGame medium";
+            break;
+        case 36:
+            grid.className = "grid-container__memoryGame large";
+            break;
+    }
     grid.innerHTML = "";
     state.cardImages.forEach((cardImage) => {
         const card = document.createElement("div");
@@ -38,12 +49,14 @@ const reset = () => {
     state.cardImages = [];
 
     shuffleArray(allCardImages);
-    const sliced = allCardImages.slice(0, 8);
+    const halfSize = sizeSelector.value;
+    const sliced = allCardImages.slice(0, halfSize);
     sliced.forEach((cardImage) => state.cardImages.push(cardImage, cardImage));
     shuffleArray(state.cardImages);
     renderGrid();
 }
 
+const sizeSelector = document.querySelector("#size");
 const resetButton = document.querySelector("#reset");
 
 resetButton.addEventListener("click", reset);
