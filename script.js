@@ -1,4 +1,4 @@
-import shuffleArray from "./helpers.js";
+import { shuffleArray, delay } from "./helpers.js";
 
 const allCardImages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const state = {
@@ -37,6 +37,8 @@ const renderGrid = () => {
         const card = document.createElement("div");
         //set its class name
         card.className = "flip-card-container flip";
+        //tag the card div with the number of cardImage
+        card.dataset.card = cardImage;
         //set its innerHTML
         card.innerHTML =
         `<div class="flip-card">
@@ -51,16 +53,31 @@ const renderGrid = () => {
             if (!state.matchedCards.includes(cardImage)) {
                 //else flip the card and add it to the flippedCards array
                 card.classList.toggle("flip");
-                state.flippedCards.push(cardImage);
+                state.flippedCards.push(card);
                 //check if we had 2 flipped cards
                 if (state.flippedCards.length == 2) {
                     //if so, check if they are match each other
-                    if (state.flippedCards[0] == state.flippedCards[1]) {
+                    //state.flippedCards[0] is an entire OBJECT (the HTML node for the card)
+                    //below, this "state.flippedCards[0].dataset.card" reads the part highlighted here:
+                    //                                 >>>>>>>>>>>>>
+                    //<div class="flip-card-container" data-card="12">
+                    //and gets the number 12 (in this example)
+                    if (state.flippedCards[0].dataset.card == state.flippedCards[1].dataset.card) {
                         //if so, add the cardImage to the matchedCards array and clear the flippedCards array
-                        state.matchedCards.push(state.flippedCards[0]);
+                        state.matchedCards.push(state.flippedCards[0].dataset.card);
                         state.flippedCards = [];
                     } else {
-
+                        //store a copy of each flipped card
+                        const card1 = state.flippedCards[0];
+                        const card2 = state.flippedCards[1];
+                        //clear the flipped cards
+                        state.flippedCards = [];
+                        //wait a bit, then...
+                        delay(1000).then(() => {
+                            //flip them both back again
+                            card1.classList.toggle("flip");
+                            card2.classList.toggle("flip");
+                        })
                     }
                 }
             }
