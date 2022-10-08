@@ -3,8 +3,8 @@ import shuffleArray from "./helpers.js";
 const allCardImages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const state = {
     // gameStarted: false,
-    peakedCards: [],
     flippedCards: [],
+    matchedCards: [],
     remainingFlips: 100,
     remainingTime: 60,
     cardImages: []
@@ -36,14 +36,25 @@ const renderGrid = () => {
         </div>`;
         grid.append(card);
         card.addEventListener("click", () => {
-            card.classList.toggle("flip");
+            if (!state.matchedCards.includes(cardImage)) {
+                card.classList.toggle("flip");
+                state.flippedCards.push(cardImage);
+                if (state.flippedCards.length == 2) {
+                    if (state.flippedCards[0] == state.flippedCards[1]) {
+                        state.matchedCards.push(state.flippedCards[0]);
+                        state.flippedCards = [];
+                    } else {
+
+                    }
+                }
+            }
         });
     });
 };
 
 const reset = () => {
-    state.peakedCards = [];
     state.flippedCards = [];
+    state.matchedCards = [];
     state.remainingFlips = 100;
     state.remainingTime = 60;
     state.cardImages = [];
