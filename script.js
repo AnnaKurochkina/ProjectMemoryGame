@@ -1,38 +1,13 @@
 import shuffleArray from "./helpers.js";
 
+const allCardImages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const state = {
     // gameStarted: false,
     peakedCards: [],
     flippedCards: [],
     remainingFlips: 100,
     remainingTime: 60,
-    cardImages: [
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://w7.pngwing.com/pngs/940/723/png-transparent-drawing-monster-cartoon-little-monsters-cartoon-character-photography-smiley-thumbnail.png",
-        "https://c8.alamy.com/comp/T9CB60/happy-cartoon-monster-vector-blue-monster-illustration-halloween-design-T9CB60.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg",
-        "https://c8.alamy.com/zooms/9/5616233966f24ab2a8ddfa37658c4ac7/t8tbmn.jpg"
-    ]
+    cardImages: []
 };
 
 const renderGrid = () => {
@@ -40,12 +15,12 @@ const renderGrid = () => {
     grid.innerHTML = "";
     state.cardImages.forEach((cardImage) => {
         const card = document.createElement("div");
-        card.className = "flip-card-container";
+        card.className = "flip-card-container flip";
         card.innerHTML =
         `<div class="flip-card">
             <div class="flip-card-front"></div>
             <div class="flip-card-back">
-                <img src="${cardImage}" alt="Monster">
+                <img src="./MonsterPictures/monster${cardImage}.png" alt="Monster">
             </div>
         </div>`;
         grid.append(card);
@@ -55,16 +30,22 @@ const renderGrid = () => {
     });
 };
 
-shuffleArray(state.cardImages);
-renderGrid();
-
-const resetButton = document.querySelector("#reset");
-
-resetButton.addEventListener("click", () => {
+const reset = () => {
     state.peakedCards = [];
     state.flippedCards = [];
     state.remainingFlips = 100;
     state.remainingTime = 60;
+    state.cardImages = [];
+
+    shuffleArray(allCardImages);
+    const sliced = allCardImages.slice(0, 8);
+    sliced.forEach((cardImage) => state.cardImages.push(cardImage, cardImage));
     shuffleArray(state.cardImages);
     renderGrid();
-});
+}
+
+const resetButton = document.querySelector("#reset");
+
+resetButton.addEventListener("click", reset);
+
+reset();
