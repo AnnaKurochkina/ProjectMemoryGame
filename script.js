@@ -36,7 +36,7 @@ const renderGrid = () => {
         //create a new div for the card
         const card = document.createElement("div");
         //set its class name
-        card.className = "flip-card-container flip";
+        card.className = "flip-card-container";
         //tag the card div with the number of cardImage
         card.dataset.card = cardImage;
         //set its innerHTML
@@ -66,6 +66,9 @@ const renderGrid = () => {
                         //if so, add the cardImage to the matchedCards array and clear the flippedCards array
                         state.matchedCards.push(state.flippedCards[0].dataset.card);
                         state.flippedCards = [];
+                        if (state.matchedCards.length == sizeSelector.value) {
+                            alert("You won!");
+                        }
                     } else {
                         //store a copy of each flipped card
                         const card1 = state.flippedCards[0];
@@ -77,7 +80,7 @@ const renderGrid = () => {
                             //flip them both back again
                             card1.classList.toggle("flip");
                             card2.classList.toggle("flip");
-                        })
+                        });
                     }
                 }
             }
