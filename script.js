@@ -2,30 +2,35 @@ import { shuffleArray, delay } from "./helpers.js";
 
 const allCardImages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const state = {
-    // gameStarted: false,
+    // gameStarted: true,
     flippedCards: [],
     matchedCards: [],
-    remainingFlips: 100,
-    remainingTime: 60,
+    remainingFlips: 0,
+    remainingTime: 0,
     cardImages: []
 };
 
-//grab the size selector and reset button
+//grab all the elements that we need
 const sizeSelector = document.querySelector("#size");
 const resetButton = document.querySelector("#reset");
+const modalDialog = document.querySelector("#modal");
+const modalTitle = document.querySelector("#modal-title");
+const modalBody = document.querySelector("#modal-body");
+const modalClose = document.querySelector("#modal-close");
+
 
 const renderGrid = () => {
     //grab the grid
     const grid = document.querySelector(".grid-container__memoryGame");
     //set its class name to correspond with the user's selected size
     switch (state.cardImages.length) {
-        case 16://Small
+        case 12://Small
             grid.className = "grid-container__memoryGame small";
             break;
         case 20://Medium
             grid.className = "grid-container__memoryGame medium";
             break;
-        case 36://Large
+        case 28://Large
             grid.className = "grid-container__memoryGame large";
             break;
     }
@@ -48,6 +53,7 @@ const renderGrid = () => {
             </div>
         </div>`;
         grid.append(card);
+
         card.addEventListener("click", () => {
             //if clicked card is already in the matchedCards array, do nothing
             if (!state.matchedCards.includes(cardImage)) {
@@ -56,6 +62,7 @@ const renderGrid = () => {
                 state.flippedCards.push(card);
                 //check if we had 2 flipped cards
                 if (state.flippedCards.length == 2) {
+                    state.remainingFlips--;
                     //if so, check if they are match each other
                     //state.flippedCards[0] is an entire OBJECT (the HTML node for the card)
                     //below, this "state.flippedCards[0].dataset.card" reads the part highlighted here:
@@ -64,10 +71,12 @@ const renderGrid = () => {
                     //and gets the number 12 (in this example)
                     if (state.flippedCards[0].dataset.card == state.flippedCards[1].dataset.card) {
                         //if so, add the cardImage to the matchedCards array and clear the flippedCards array
-                        state.matchedCards.push(state.flippedCards[0].dataset.card);
+                        state.matchedCards.push(parseInt(state.flippedCards[0].dataset.card));
                         state.flippedCards = [];
                         if (state.matchedCards.length == sizeSelector.value) {
-                            alert("You won!");
+                            modalTitle.innerText = "Congratulations!";
+                            modalBody.innerText = "You are a Rock Star!";
+                            modalDialog.showModal();
                         }
                     } else {
                         //store a copy of each flipped card
@@ -82,6 +91,12 @@ const renderGrid = () => {
                             card2.classList.toggle("flip");
                         });
                     }
+
+                    if (state.remainingFlips == 0) {
+                        modalTitle.innerText = "You ran out of flips :(";
+                        modalBody.innerText = "You need more practice.";
+                        modalDialog.showModal();
+                    }
                 }
             }
         });
@@ -89,9 +104,10 @@ const renderGrid = () => {
 };
 
 const reset = () => {
+    // state.gameStarted = true;
     state.flippedCards = [];
     state.matchedCards = [];
-    state.remainingFlips = 100;
+    state.remainingFlips = Math.floor(parseInt(sizeSelector.value) * 1.5);
     state.remainingTime = 60;
     state.cardImages = [];
 
@@ -99,6 +115,7 @@ const reset = () => {
     shuffleArray(allCardImages);
     //read the size value selected by the user
     const halfSize = sizeSelector.value;
+
     //take first n number of cardImage ids into a temporary array
     const sliced = allCardImages.slice(0, halfSize);
     //for each item in the temporary array, push 2 copies into the current game state array
@@ -108,8 +125,13 @@ const reset = () => {
 
     //finally we can render the grid
     renderGrid();
-}
+};
 
 resetButton.addEventListener("click", reset);
+sizeSelector.addEventListener("change", reset);
+modalClose.addEventListener("click", () => {
+    modalDialog.close();
+    reset();
+});
 
 reset();

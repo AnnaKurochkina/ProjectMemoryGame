@@ -1,24 +1,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Varela+Round&display=swap');
 
+$color-primary: rgb(243, 155, 4);
+$color-secondary: #51992d;
+$color-hover: #77cb72;
+$color-background: purple;
+$color-card: rgb(100, 147, 177);
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 body {
-    background-color: purple;
+    background-color: $color-background;
+}
+
+#modal {
+    margin: auto;
+    border-radius: 1rem;
+    padding: 2rem;
+    background-color: $color-background;
+
+    & > * {
+        margin: 0 0 0.5rem 0;
+    }
+
+    &::backdrop {
+        background: rgb(0 0 0 / 0.4);
+    }
+
+    button {
+        margin: 0 auto;
+        display: block;
+    }
 }
 
 button {
-    padding: 10px;
-    background-color: olive;
+    padding: 10px 20px;
+    transition: 0.3s;
+    background: none;
+    border: 2px solid $color-secondary;
+    color: $color-primary;
+    font-size: larger;
+    border-radius: .5rem;
+
+    &:hover {
+        box-shadow: inset 0 0 0 2em $color-secondary;
+        color: #fff;
+        cursor: pointer;
+
+        &:active {
+            border-color: #fff;
+        }
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
 }
 
 h1 {
     padding-bottom: 1rem;
-    color: rgb(243, 155, 4);
-    font-family: 'Ubuntu', sans-serif;
+    color: $color-primary;
 }
 
 .flex-container__memoryGame {
@@ -37,35 +82,35 @@ h1 {
 
     &.small {
         grid-template-columns: repeat(4, 10rem);
-        grid-template-rows: repeat(4, 10rem);
+        grid-template-rows: repeat(3, 10rem);
     }
 
     &.medium {
-        grid-template-columns: repeat(4, 10rem);
-        grid-template-rows: repeat(5, 10rem);
+        grid-template-columns: repeat(5, 10rem);
+        grid-template-rows: repeat(4, 10rem);
     }
 
     &.large {
-        grid-template-columns: repeat(6, 8rem);
-        grid-template-rows: repeat(6, 8rem);
+        grid-template-columns: repeat(6, 9rem);
+        grid-template-rows: repeat(4, 9rem);
     }
 }
 
 @media screen and (max-width: 800px) {
     .grid-container__memoryGame {
         &.small {
-            grid-template-columns: repeat(4, 4rem);
-            grid-template-rows: repeat(4, 4rem);
+            grid-template-columns: repeat(3, 6rem);
+            grid-template-rows: repeat(4, 6rem);
         }
     
         &.medium {
-            grid-template-columns: repeat(4, 4rem);
-            grid-template-rows: repeat(5, 4rem);
+            grid-template-columns: repeat(4, 4.5rem);
+            grid-template-rows: repeat(5, 4.5rem);
         }
     
         &.large {
-            grid-template-columns: repeat(4, 4rem);
-            grid-template-rows: repeat(9, 4rem);
+            grid-template-columns: repeat(4, 4.5rem);
+            grid-template-rows: repeat(6, 4.5rem);
         }
     }
 }
@@ -100,7 +145,7 @@ h1 {
 }
 
 .flip-card-front {
-    background-color:rgb(100, 147, 177);
+    background-color: $color-card;
 }
 
 .flip-card-back {

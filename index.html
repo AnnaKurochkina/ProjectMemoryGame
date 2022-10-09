@@ -8,23 +8,25 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <main>
+    <div class="flex-container__memoryGame">
+        <h1>Match the monsters</h1>
         <div>
-            <div class="flex-container__memoryGame">
-                <h1>Match the monsters</h1>
-                <div>
-                    <select id="size">
-                        <option value="8">Small</option>
-                        <option value="10">Medium</option>
-                        <option value="18">Large</option>
-                    </select>
-                    <button id="reset">reset</button>
-                </div>
-               
-            </div>
-            <div class="grid-container__memoryGame"></div>
+            <select id="size">
+                <option value="6">Small</option>
+                <option value="10">Medium</option>
+                <option value="14">Large</option>
+            </select>
+            <button id="reset">reset</button>
         </div>
-    </main>
+    </div>
+    <div class="grid-container__memoryGame"></div>
+
+    <dialog id="modal">
+        <h1 id="modal-title"></h1>
+        <p id="modal-body"></p>
+        <button id="modal-close">reset</button>
+    </dialog>
+
 </body>
 <script src="./script.js" type="module"></script>
 </html>
