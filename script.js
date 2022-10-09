@@ -2,22 +2,25 @@ import { shuffleArray, delay } from "./helpers.js";
 
 const allCardImages = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 const state = {
-    // gameStarted: true,
+    gameStarted: false,
+    clickingLocked: false,
     flippedCards: [],
     matchedCards: [],
     remainingFlips: 0,
-    remainingTime: 0,
+    remainingSeconds: 0,
     cardImages: []
 };
 
 //grab all the elements that we need
+const timer = document.querySelector("#timer");
 const sizeSelector = document.querySelector("#size");
 const resetButton = document.querySelector("#reset");
 const modalDialog = document.querySelector("#modal");
 const modalTitle = document.querySelector("#modal-title");
 const modalBody = document.querySelector("#modal-body");
 const modalClose = document.querySelector("#modal-close");
-
+//keep track of timer so we can stop it
+let timerInterval;
 
 const renderGrid = () => {
     //grab the grid
@@ -55,8 +58,9 @@ const renderGrid = () => {
         grid.append(card);
 
         card.addEventListener("click", () => {
-            //if clicked card is already in the matchedCards array, do nothing
-            if (!state.matchedCards.includes(cardImage)) {
+            ensureTimerIsStarted();
+            //if clicked card is already in the matchedCards array or the flippedCards array, do nothing
+            if (!state.clickingLocked && !state.matchedCards.includes(cardImage) && !state.flippedCards.includes(card)) {
                 //else flip the card and add it to the flippedCards array
                 card.classList.toggle("flip");
                 state.flippedCards.push(card);
@@ -77,18 +81,22 @@ const renderGrid = () => {
                             modalTitle.innerText = "Congratulations!";
                             modalBody.innerText = "You are a Rock Star!";
                             modalDialog.showModal();
+                            window.clearInterval(timerInterval);
                         }
                     } else {
                         //store a copy of each flipped card
                         const card1 = state.flippedCards[0];
                         const card2 = state.flippedCards[1];
-                        //clear the flipped cards
+                        //clear the flipped cards and lock clicking
                         state.flippedCards = [];
+                        state.clickingLocked = true;
                         //wait a bit, then...
-                        delay(1000).then(() => {
+                        delay(500).then(() => {
                             //flip them both back again
                             card1.classList.toggle("flip");
                             card2.classList.toggle("flip");
+                            //unlock clicking
+                            state.clickingLocked = false;
                         });
                     }
 
@@ -96,6 +104,7 @@ const renderGrid = () => {
                         modalTitle.innerText = "You ran out of flips :(";
                         modalBody.innerText = "You need more practice.";
                         modalDialog.showModal();
+                        window.clearInterval(timerInterval);
                     }
                 }
             }
@@ -104,12 +113,13 @@ const renderGrid = () => {
 };
 
 const reset = () => {
-    // state.gameStarted = true;
+    state.gameStarted = false;
     state.flippedCards = [];
     state.matchedCards = [];
-    state.remainingFlips = Math.floor(parseInt(sizeSelector.value) * 1.5);
-    state.remainingTime = 60;
+    state.remainingFlips = Math.floor(parseInt(sizeSelector.value) * 2.5);
+    state.remainingSeconds = Math.floor(parseInt(sizeSelector.value) * 5.5);
     state.cardImages = [];
+    window.clearInterval(timerInterval);
 
     //first shuffle the source array (so that we get differen images each game)
     shuffleArray(allCardImages);
@@ -125,6 +135,23 @@ const reset = () => {
 
     //finally we can render the grid
     renderGrid();
+    timer.innerText = state.remainingSeconds;
+};
+
+const ensureTimerIsStarted = () => {
+    if (!state.gameStarted) {
+        timerInterval = window.setInterval(() => {
+            state.remainingSeconds--;
+            timer.innerText = state.remainingSeconds;
+            if (state.remainingSeconds == 0) {
+                modalTitle.innerText = "You ran out of time :(";
+                modalBody.innerText = "You need more practice.";
+                modalDialog.showModal();
+                window.clearInterval(timerInterval);
+            }
+        }, 1000);
+        state.gameStarted = true;
+    }
 };
 
 resetButton.addEventListener("click", reset);
