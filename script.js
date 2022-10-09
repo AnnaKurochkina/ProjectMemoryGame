@@ -19,12 +19,11 @@ const modalDialog = document.querySelector("#modal");
 const modalTitle = document.querySelector("#modal-title");
 const modalBody = document.querySelector("#modal-body");
 const modalClose = document.querySelector("#modal-close");
+const grid = document.querySelector(".grid-container__memoryGame");
 //keep track of timer so we can stop it
 let timerInterval;
 
 const renderGrid = () => {
-    //grab the grid
-    const grid = document.querySelector(".grid-container__memoryGame");
     //set its class name to correspond with the user's selected size
     switch (state.cardImages.length) {
         case 12://Small
@@ -39,76 +38,40 @@ const renderGrid = () => {
     }
     //clear the grid contents
     grid.innerHTML = "";
-    //for each cardImage in the current game state array
-    state.cardImages.forEach((cardImage) => {
-        //create a new div for the card
-        const card = document.createElement("div");
-        //set its class name
-        card.className = "flip-card-container";
-        //tag the card div with the number of cardImage
-        card.dataset.card = cardImage;
-        //set its innerHTML
-        card.innerHTML =
-        `<div class="flip-card">
-            <div class="flip-card-front"></div>
-            <div class="flip-card-back">
-                <img src="./MonsterPictures/monster${cardImage}.png" alt="Monster">
-            </div>
-        </div>`;
-        grid.append(card);
+    //for each cardImage in the current game state array, render a div and add it to the grid
+    state.cardImages.forEach((cardImage) => renderCard(cardImage));
+};
 
-        card.addEventListener("click", () => {
-            ensureTimerIsStarted();
-            //if clicked card is already in the matchedCards array or the flippedCards array, do nothing
-            if (!state.clickingLocked && !state.matchedCards.includes(cardImage) && !state.flippedCards.includes(card)) {
-                //else flip the card and add it to the flippedCards array
-                card.classList.toggle("flip");
-                state.flippedCards.push(card);
-                //check if we had 2 flipped cards
-                if (state.flippedCards.length == 2) {
-                    state.remainingFlips--;
-                    //if so, check if they are match each other
-                    //state.flippedCards[0] is an entire OBJECT (the HTML node for the card)
-                    //below, this "state.flippedCards[0].dataset.card" reads the part highlighted here:
-                    //                                 >>>>>>>>>>>>>
-                    //<div class="flip-card-container" data-card="12">
-                    //and gets the number 12 (in this example)
-                    if (state.flippedCards[0].dataset.card == state.flippedCards[1].dataset.card) {
-                        //if so, add the cardImage to the matchedCards array and clear the flippedCards array
-                        state.matchedCards.push(parseInt(state.flippedCards[0].dataset.card));
-                        state.flippedCards = [];
-                        if (state.matchedCards.length == sizeSelector.value) {
-                            modalTitle.innerText = "Congratulations!";
-                            modalBody.innerText = "You are a Rock Star!";
-                            modalDialog.showModal();
-                            window.clearInterval(timerInterval);
-                        }
-                    } else {
-                        //store a copy of each flipped card
-                        const card1 = state.flippedCards[0];
-                        const card2 = state.flippedCards[1];
-                        //clear the flipped cards and lock clicking
-                        state.flippedCards = [];
-                        state.clickingLocked = true;
-                        //wait a bit, then...
-                        delay(500).then(() => {
-                            //flip them both back again
-                            card1.classList.toggle("flip");
-                            card2.classList.toggle("flip");
-                            //unlock clicking
-                            state.clickingLocked = false;
-                        });
-                    }
+const renderCard = (cardImage) => {
+    //create a new div for the card
+    const card = document.createElement("div");
+    //set its class name
+    card.className = "flip-card-container";
+    //tag the card div with the number of cardImage
+    card.dataset.card = cardImage;
+    //set its innerHTML
+    card.innerHTML =
+    `<div class="flip-card">
+        <div class="flip-card-front"></div>
+        <div class="flip-card-back">
+            <img src="./MonsterPictures/monster${cardImage}.png" alt="Monster">
+        </div>
+    </div>`;
+    grid.append(card);
 
-                    if (state.remainingFlips == 0) {
-                        modalTitle.innerText = "You ran out of flips :(";
-                        modalBody.innerText = "You need more practice.";
-                        modalDialog.showModal();
-                        window.clearInterval(timerInterval);
-                    }
-                }
+    card.addEventListener("click", () => {
+        ensureTimerIsStarted();
+        //if clicked card is already in the matchedCards array or the flippedCards array, do nothing
+        if (!state.clickingLocked && !state.matchedCards.includes(cardImage) && !state.flippedCards.includes(card)) {
+            //else flip the card and add it to the flippedCards array
+            card.classList.toggle("flip");
+            state.flippedCards.push(card);
+            //check if we had 2 flipped cards
+            if (state.flippedCards.length == 2) {
+                state.remainingFlips--;
+                handleAttempt();
             }
-        });
+        }
     });
 };
 
@@ -144,15 +107,55 @@ const ensureTimerIsStarted = () => {
             state.remainingSeconds--;
             timer.innerText = state.remainingSeconds;
             if (state.remainingSeconds == 0) {
-                modalTitle.innerText = "You ran out of time :(";
-                modalBody.innerText = "You need more practice.";
-                modalDialog.showModal();
-                window.clearInterval(timerInterval);
+                showDialog("You ran out of time :(", "You need more practice.");
             }
         }, 1000);
         state.gameStarted = true;
     }
 };
+
+const handleAttempt = () => {
+    //if so, check if they are match each other
+    //state.flippedCards[0] is an entire OBJECT (the HTML node for the card)
+    //below, this "state.flippedCards[0].dataset.card" reads the part highlighted here:
+    //                                 >>>>>>>>>>>>>
+    //<div class="flip-card-container" data-card="12">
+    //and gets the number 12 (in this example)
+    if (state.flippedCards[0].dataset.card == state.flippedCards[1].dataset.card) {
+        //if so, add the cardImage to the matchedCards array and clear the flippedCards array
+        state.matchedCards.push(parseInt(state.flippedCards[0].dataset.card));
+        state.flippedCards = [];
+        if (state.matchedCards.length == sizeSelector.value) {
+            showDialog("Congratulations!", "You are a Rock Star!")
+        }
+    } else {
+        //store a copy of each flipped card
+        const card1 = state.flippedCards[0];
+        const card2 = state.flippedCards[1];
+        //clear the flipped cards and lock clicking
+        state.flippedCards = [];
+        state.clickingLocked = true;
+        //wait a bit, then...
+        delay(500).then(() => {
+            //flip them both back again
+            card1.classList.toggle("flip");
+            card2.classList.toggle("flip");
+            //unlock clicking
+            state.clickingLocked = false;
+        });
+    }
+
+    if (state.remainingFlips == 0) {
+        showDialog("You ran out of flips :(", "You need more practice.");
+    }
+};
+
+const showDialog = (title, body) => {
+    modalTitle.innerText = title;
+    modalBody.innerText = body;
+    modalDialog.showModal();
+    window.clearInterval(timerInterval);
+}
 
 resetButton.addEventListener("click", reset);
 sizeSelector.addEventListener("change", reset);
