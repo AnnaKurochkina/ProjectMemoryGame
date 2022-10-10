@@ -12,7 +12,7 @@
         <h1>Match the monsters</h1>
         <div>
             <span id="timer" class="controls"></span>
-            <select id="size">
+            <select id="size" class="controls">
                 <option value="6">Small</option>
                 <option value="10">Medium</option>
                 <option value="14">Large</option>
@@ -26,8 +26,10 @@
         <h1 id="modal-title"></h1>
         <p id="modal-body"></p>
         <button id="modal-close" class="controls">reset</button>
+        <canvas id="modal-canvas"></canvas>
     </dialog>
-
+    
+    <script src="./script.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </body>
-<script src="./script.js" type="module"></script>
 </html>

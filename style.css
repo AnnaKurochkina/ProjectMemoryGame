@@ -26,6 +26,12 @@ body {
   margin: 0 auto;
   display: block;
 }
+#modal canvas {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  pointer-events: none;
+}
 
 .controls {
   color: #f39b04;
@@ -33,12 +39,12 @@ body {
   padding: 10px 20px;
   border: 2px solid #51992d;
   border-radius: 0.5rem;
+  background: none;
 }
 
 button {
   padding: 10px 20px;
   transition: 0.3s;
-  background: none;
 }
 button:hover {
   box-shadow: inset 0 0 0 2em #51992d;
@@ -62,6 +68,9 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.flex-container__memoryGame option {
+  color: #51992d;
 }
 
 .grid-container__memoryGame {

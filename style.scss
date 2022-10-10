@@ -35,6 +35,13 @@ body {
         margin: 0 auto;
         display: block;
     }
+
+    canvas {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        pointer-events: none;
+    }
 }
 
 .controls {
@@ -43,12 +50,12 @@ body {
     padding: 10px 20px;
     border: 2px solid $color-secondary;
     border-radius: .5rem;
+    background: none;
 }
 
 button {
     padding: 10px 20px;
     transition: 0.3s;
-    background: none;
 
     &:hover {
         box-shadow: inset 0 0 0 2em $color-secondary;
@@ -75,6 +82,10 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    option {
+        color: $color-secondary;
+    }
 }
 
 .grid-container__memoryGame {

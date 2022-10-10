@@ -19,6 +19,7 @@ const modalDialog = document.querySelector("#modal");
 const modalTitle = document.querySelector("#modal-title");
 const modalBody = document.querySelector("#modal-body");
 const modalClose = document.querySelector("#modal-close");
+const modalCanvas = document.querySelector("#modal-canvas");
 const grid = document.querySelector(".grid-container__memoryGame");
 //keep track of timer so we can stop it
 let timerInterval;
@@ -115,7 +116,7 @@ const ensureTimerIsStarted = () => {
 };
 
 const handleAttempt = () => {
-    //if so, check if they are match each other
+    //if we had 2 flipped cards, check if they are match each other
     //state.flippedCards[0] is an entire OBJECT (the HTML node for the card)
     //below, this "state.flippedCards[0].dataset.card" reads the part highlighted here:
     //                                 >>>>>>>>>>>>>
@@ -126,7 +127,7 @@ const handleAttempt = () => {
         state.matchedCards.push(parseInt(state.flippedCards[0].dataset.card));
         state.flippedCards = [];
         if (state.matchedCards.length == sizeSelector.value) {
-            showDialog("Congratulations!", "You are a Rock Star!")
+            showDialog("Congratulations!", "You are a Rock Star!", true);
         }
     } else {
         //store a copy of each flipped card
@@ -150,11 +151,20 @@ const handleAttempt = () => {
     }
 };
 
-const showDialog = (title, body) => {
+const showDialog = (title, body, showConfetti) => {
     modalTitle.innerText = title;
     modalBody.innerText = body;
     modalDialog.showModal();
     window.clearInterval(timerInterval);
+    if (showConfetti) {
+        modalCanvas.width = window.innerWidth;
+        modalCanvas.height = window.innerHeight;
+        const modalConfetti = confetti.create(modalCanvas);
+        modalConfetti({
+            particleCount: 100,
+            spread: 60
+        });
+    }
 }
 
 resetButton.addEventListener("click", reset);
@@ -165,3 +175,4 @@ modalClose.addEventListener("click", () => {
 });
 
 reset();
+
