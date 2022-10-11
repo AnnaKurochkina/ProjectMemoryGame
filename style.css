@@ -1,112 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Varela+Round&display=swap");
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Ubuntu", sans-serif;
-}
-
-body {
-  background-color: purple;
-}
-
-#modal {
-  margin: auto;
-  border-radius: 1rem;
-  padding: 2rem;
-  background-color: purple;
-}
-#modal > * {
-  margin: 0 0 0.5rem 0;
-}
-#modal::backdrop {
-  background: rgba(0, 0, 0, 0.4);
-}
-#modal button {
-  margin: 0 auto;
-  display: block;
-}
-#modal canvas {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  pointer-events: none;
-}
-
-.controls {
-  color: #f39b04;
-  font-size: larger;
-  padding: 10px 20px;
-  border: 2px solid #51992d;
-  border-radius: 0.5rem;
-  background: none;
-}
-
-button {
-  padding: 10px 20px;
-  transition: 0.3s;
-}
-button:hover {
-  box-shadow: inset 0 0 0 2em #51992d;
-  color: #fff;
-  cursor: pointer;
-}
-button:hover:active {
-  border-color: #fff;
-}
-button:focus-visible {
-  outline: none;
-}
-
-h1 {
-  padding-bottom: 1rem;
-  color: #f39b04;
-}
-
-.flex-container__memoryGame {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.flex-container__memoryGame option {
-  color: #51992d;
-}
-
-.grid-container__memoryGame {
-  display: grid;
-  gap: 1rem;
-  text-align: center;
-  justify-content: center;
-  margin-top: 1rem;
-}
-.grid-container__memoryGame.small {
-  grid-template-columns: repeat(4, 10rem);
-  grid-template-rows: repeat(3, 10rem);
-}
-.grid-container__memoryGame.medium {
-  grid-template-columns: repeat(5, 10rem);
-  grid-template-rows: repeat(4, 10rem);
-}
-.grid-container__memoryGame.large {
-  grid-template-columns: repeat(6, 9rem);
-  grid-template-rows: repeat(4, 9rem);
-}
-
-@media screen and (max-width: 800px) {
-  .grid-container__memoryGame.small {
-    grid-template-columns: repeat(3, 6rem);
-    grid-template-rows: repeat(4, 6rem);
-  }
-  .grid-container__memoryGame.medium {
-    grid-template-columns: repeat(4, 4.5rem);
-    grid-template-rows: repeat(5, 4.5rem);
-  }
-  .grid-container__memoryGame.large {
-    grid-template-columns: repeat(4, 4.5rem);
-    grid-template-rows: repeat(6, 4.5rem);
-  }
-}
 .flip-card-container {
   width: 100%;
   height: 100%;
@@ -148,4 +40,160 @@ h1 {
   width: 100%;
   height: 100%;
   border-radius: 1rem;
+}
+
+.controls {
+  color: #f39b04;
+  font-size: larger;
+  padding: 10px 20px;
+  border: 2px solid #51992d;
+  border-radius: 0.5rem;
+  background: none;
+}
+
+button {
+  padding: 10px 20px;
+  transition: 0.3s;
+}
+button:hover {
+  box-shadow: inset 0 0 0 2em #51992d;
+  color: #fff;
+  cursor: pointer;
+}
+button:hover:active {
+  border-color: #fff;
+}
+button:focus-visible {
+  outline: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+}
+
+body {
+  background-color: purple;
+  width: 100%;
+  height: 100vh;
+}
+
+#modal {
+  margin: auto;
+  border-radius: 1rem;
+  padding: 2rem;
+  background-color: purple;
+  box-shadow: 0 0 10px 10px #420135;
+  border: purple;
+}
+#modal > * {
+  margin: 0 0 0.5rem 0;
+}
+#modal::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+}
+#modal button {
+  margin: 0 auto;
+  display: block;
+}
+#modal canvas {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  pointer-events: none;
+}
+
+.flex-container__layout {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  padding-bottom: 1rem;
+  color: #f39b04;
+}
+
+.flex-container__memoryGame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.flex-container__memoryGame option {
+  color: #51992d;
+}
+
+.grid-container__memoryGame {
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.grid-container__memoryGame.small {
+  grid-template-columns: repeat(4, 10rem);
+  grid-template-rows: repeat(3, 10rem);
+}
+.grid-container__memoryGame.medium {
+  grid-template-columns: repeat(5, 10rem);
+  grid-template-rows: repeat(4, 10rem);
+}
+.grid-container__memoryGame.large {
+  grid-template-columns: repeat(7, 9rem);
+  grid-template-rows: repeat(4, 9rem);
+}
+
+@media screen and (min-width: 834px) and (orientation: portrait) {
+  .grid-container__memoryGame.small {
+    grid-template-columns: repeat(3, 10rem);
+    grid-template-rows: repeat(4, 10rem);
+  }
+  .grid-container__memoryGame.medium {
+    grid-template-columns: repeat(4, 10rem);
+    grid-template-rows: repeat(5, 10rem);
+  }
+  .grid-container__memoryGame.large {
+    grid-template-columns: repeat(4, 8rem);
+    grid-template-rows: repeat(7, 8rem);
+  }
+}
+@media screen and (max-width: 833px) {
+  .grid-container__memoryGame.small {
+    grid-template-columns: repeat(3, 6rem);
+    grid-template-rows: repeat(4, 6rem);
+  }
+  .grid-container__memoryGame.medium {
+    grid-template-columns: repeat(4, 5rem);
+    grid-template-rows: repeat(5, 5rem);
+  }
+  .grid-container__memoryGame.large {
+    grid-template-columns: repeat(4, 5rem);
+    grid-template-rows: repeat(7, 5rem);
+  }
+}
+@media screen and (min-width: 834px) and (max-width: 1193px) and (orientation: landscape) {
+  .flex-container__layout {
+    flex-direction: row;
+    padding-left: 1rem;
+  }
+
+  .flex-container__memoryGame > div > * {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .grid-container__memoryGame.small {
+    grid-template-columns: repeat(4, 7rem);
+    grid-template-rows: repeat(3, 7rem);
+  }
+  .grid-container__memoryGame.medium {
+    grid-template-columns: repeat(5, 5rem);
+    grid-template-rows: repeat(4, 5rem);
+  }
+  .grid-container__memoryGame.large {
+    grid-template-columns: repeat(7, 5rem);
+    grid-template-rows: repeat(4, 5rem);
+  }
 }

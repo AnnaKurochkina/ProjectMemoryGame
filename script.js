@@ -61,6 +61,7 @@ const renderCard = (cardImage) => {
     grid.append(card);
 
     card.addEventListener("click", () => {
+        //When the first card is flipped we start the timer
         ensureTimerIsStarted();
         //if clicked card is already in the matchedCards array or the flippedCards array, do nothing
         if (!state.clickingLocked && !state.matchedCards.includes(cardImage) && !state.flippedCards.includes(card)) {
@@ -127,27 +128,25 @@ const handleAttempt = () => {
         state.matchedCards.push(parseInt(state.flippedCards[0].dataset.card));
         state.flippedCards = [];
         if (state.matchedCards.length == sizeSelector.value) {
-            showDialog("Congratulations!", "You are a Rock Star!", true);
+            showDialog("Congratulations!", "Your memory is fantastic!", true);
         }
     } else {
-        //store a copy of each flipped card
-        const card1 = state.flippedCards[0];
-        const card2 = state.flippedCards[1];
-        //clear the flipped cards and lock clicking
-        state.flippedCards = [];
+        //lock clicking
         state.clickingLocked = true;
         //wait a bit, then...
         delay(500).then(() => {
             //flip them both back again
-            card1.classList.toggle("flip");
-            card2.classList.toggle("flip");
+            state.flippedCards[0].classList.toggle("flip");
+            state.flippedCards[1].classList.toggle("flip");
+            //clear flippedCards array
+            state.flippedCards = [];
             //unlock clicking
             state.clickingLocked = false;
         });
     }
 
     if (state.remainingFlips == 0) {
-        showDialog("You ran out of flips :(", "You need more practice.");
+        showDialog("You ran out of flips :(", "You need more practice.", );
     }
 };
 
@@ -162,7 +161,8 @@ const showDialog = (title, body, showConfetti) => {
         const modalConfetti = confetti.create(modalCanvas);
         modalConfetti({
             particleCount: 100,
-            spread: 60
+            spread: 60,
+            resize: true
         });
     }
 }
@@ -175,4 +175,3 @@ modalClose.addEventListener("click", () => {
 });
 
 reset();
-

@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Varela+Round&display=swap');
+@use "./_variables" as *;
+@use "./_flipCards" as *;
+@use "./_controls" as *;
 
-$color-primary: rgb(243, 155, 4);
-$color-secondary: #51992d;
-$color-hover: #77cb72;
-$color-background: purple;
-$color-card: rgb(100, 147, 177);
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&family=Varela+Round&display=swap');
 
 * {
     margin: 0;
@@ -15,6 +14,8 @@ $color-card: rgb(100, 147, 177);
 
 body {
     background-color: $color-background;
+    width: 100%;
+    height: 100vh;
 }
 
 #modal {
@@ -22,6 +23,8 @@ body {
     border-radius: 1rem;
     padding: 2rem;
     background-color: $color-background;
+    box-shadow:  0 0 10px 10px rgb(66, 1, 53);
+    border: $color-background;
 
     & > * {
         margin: 0 0 0.5rem 0;
@@ -44,32 +47,9 @@ body {
     }
 }
 
-.controls {
-    color: $color-primary;
-    font-size: larger;
-    padding: 10px 20px;
-    border: 2px solid $color-secondary;
-    border-radius: .5rem;
-    background: none;
-}
-
-button {
-    padding: 10px 20px;
-    transition: 0.3s;
-
-    &:hover {
-        box-shadow: inset 0 0 0 2em $color-secondary;
-        color: #fff;
-        cursor: pointer;
-
-        &:active {
-            border-color: #fff;
-        }
-    }
-
-    &:focus-visible {
-        outline: none;
-    }
+.flex-container__layout {
+    display: flex;
+    flex-direction: column;
 }
 
 h1 {
@@ -88,12 +68,13 @@ h1 {
     }
 }
 
+// default for laptop or ipad screen
 .grid-container__memoryGame {
     display: grid;
     gap: 1rem;
     text-align: center;
     justify-content: center;
-    margin-top: 1rem;
+    padding: 1rem;
 
     &.small {
         grid-template-columns: repeat(4, 10rem);
@@ -106,12 +87,33 @@ h1 {
     }
 
     &.large {
-        grid-template-columns: repeat(6, 9rem);
+        grid-template-columns: repeat(7, 9rem);
         grid-template-rows: repeat(4, 9rem);
     }
 }
 
-@media screen and (max-width: 800px) {
+//laptop screen or ipad in portrait mode
+@media screen and (min-width: 834px) and (orientation: portrait) {
+    .grid-container__memoryGame {
+        &.small {
+            grid-template-columns: repeat(3, 10rem);
+            grid-template-rows: repeat(4, 10rem);
+        }
+    
+        &.medium {
+            grid-template-columns: repeat(4, 10rem);
+            grid-template-rows: repeat(5, 10rem);
+        }
+    
+        &.large {
+            grid-template-columns: repeat(4, 8rem);
+            grid-template-rows: repeat(7, 8rem);
+        }
+    }
+}
+
+//phone in portrait mode
+@media screen and (max-width: 833px) {
     .grid-container__memoryGame {
         &.small {
             grid-template-columns: repeat(3, 6rem);
@@ -119,60 +121,43 @@ h1 {
         }
     
         &.medium {
-            grid-template-columns: repeat(4, 4.5rem);
-            grid-template-rows: repeat(5, 4.5rem);
+            grid-template-columns: repeat(4, 5rem);
+            grid-template-rows: repeat(5, 5rem);
         }
     
         &.large {
-            grid-template-columns: repeat(4, 4.5rem);
-            grid-template-rows: repeat(6, 4.5rem);
+            grid-template-columns: repeat(4, 5rem);
+            grid-template-rows: repeat(7, 5rem);
         }
     }
 }
 
-.flip-card-container {
-    width: 100%;
-    height: 100%;
-    perspective: 1000px;
+//phone in landscape mode
+@media screen and (min-width: 834px) and (max-width: 1193px) and (orientation: landscape) {
+    .flex-container__layout {
+        flex-direction: row;
+        padding-left: 1rem;
+    }
+
+    .flex-container__memoryGame > div > * {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .grid-container__memoryGame {
+        &.small {
+            grid-template-columns: repeat(4, 7rem);
+            grid-template-rows: repeat(3, 7rem);
+        }
+    
+        &.medium {
+            grid-template-columns: repeat(5, 5rem);
+            grid-template-rows: repeat(4, 5rem);
+        }
+    
+        &.large {
+            grid-template-columns: repeat(7, 5rem);
+            grid-template-rows: repeat(4, 5rem);
+        }
+    }
 }
-
-.flip-card {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: .5s;
-    transform-style: preserve-3d;
-}
-
-.flip-card-container.flip .flip-card {
-    transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-    display: flex;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    backface-visibility: hidden;
-    border-radius: 1rem;
-}
-
-.flip-card-front {
-    background-color: $color-card;
-}
-
-.flip-card-back {
-    transform: rotateY(180deg);
-}
-
-.flip-card-back  img{
-    width: 100%;
-    height: 100%;
-    border-radius: 1rem;
-}
-
-
-
-
