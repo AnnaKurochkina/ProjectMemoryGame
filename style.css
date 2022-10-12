@@ -115,6 +115,10 @@ h1 {
   color: #f39b04;
 }
 
+p {
+  color: #f39b04;
+}
+
 .flex-container__memoryGame {
   display: flex;
   flex-direction: column;
